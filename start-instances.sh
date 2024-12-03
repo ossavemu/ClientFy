@@ -48,7 +48,7 @@ for i in {1..4}; do
     port=$((3007 + i))
     sudo -u $ACTUAL_USER pm2 start src/app.js --name "instancia-$i" \
         --log "$LOG_DIR/instance-$i.log" \
-        -- --port $port --instance_id $i -i 1
+        --env INSTANCE_ID=$i --env PORT=$port -i 1
 done
 
 # Configurar PM2 para iniciar en el arranque
