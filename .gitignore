@@ -36,8 +36,3 @@ node_modules
 *.log
 *qr.png
 .aider*
-
-# Archivos de credenciales
-clientfycalendar.json
-.env
-.env.example

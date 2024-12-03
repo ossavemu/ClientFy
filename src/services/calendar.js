@@ -1,19 +1,34 @@
 import { google } from 'googleapis';
+import fetch from 'node-fetch';
 
-const appEmail = 'clientfy0@gmail.com';
+const appEmail = process.env.GOOGLE_CALENDAR_EMAIL || 'clientfy0@gmail.com';
+const calendarJsonUrl = process.env.GOOGLE_CALENDAR_JSON_URL || 'https://raw.githubusercontent.com/ossavemu/ClientFyAdmin/refs/heads/master/clientfycalendar.json';
 
-const auth = new google.auth.GoogleAuth({
-  keyFile: './clientfycalendar.json',
-  scopes: ['https://www.googleapis.com/auth/calendar'],
-  subject: appEmail,
-});
+async function getAuthCredentials() {
+  try {
+    const response = await fetch(calendarJsonUrl);
+    const credentials = await response.json();
+    return credentials;
+  } catch (error) {
+    console.error('Error fetching calendar credentials:', error);
+    throw error;
+  }
+}
+
+async function getAuth() {
+  const credentials = await getAuthCredentials();
+  return new google.auth.GoogleAuth({
+    credentials,
+    scopes: ['https://www.googleapis.com/auth/calendar'],
+    subject: appEmail,
+  });
+}
 
 const calendar = google.calendar({
   version: 'v3',
 });
 
-const calendarId =
-  'ef57ef92ca34146eee5b0d6351573fa3728a2a0b179dc0669022e4b9deaa8c19@group.calendar.google.com';
+const calendarId = process.env.GOOGLE_CALENDAR_ID || 'ef57ef92ca34146eee5b0d6351573fa3728a2a0b179dc0669022e4b9deaa8c19@group.calendar.google.com';
 
 const timeZone = 'America/Bogota';
 
@@ -34,6 +49,7 @@ export async function createEvent(
   duration = standardDuration
 ) {
   try {
+    const auth = await getAuth();
     const authClient = await auth.getClient();
 
     google.options({ auth: authClient });

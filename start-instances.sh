@@ -54,7 +54,7 @@ start_instance() {
     if [ "$instance_id" -lt 1 ] || [ "$instance_id" -gt "$max_instances" ]; then
         echo "Error: Instance ID debe estar entre 1 y $max_instances"
         return 1
-    }
+    fi
     
     local port=$((base_port + instance_id - 1))
     
