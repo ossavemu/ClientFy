@@ -8,7 +8,7 @@
     "migrate": "node src/database/migrations/runMigrations.js",
     "migrate:down": "node -e 'require(\"./src/database/migrations/001_initial_schema.js\").down()'",
     "start": "node src/app.js",
-    "start-all": "sudo bash ./start-instances.sh",
+    "start-all": "pm2 start ./start-instances.sh",
     "stop-all": "sudo bash ./stop-instances.sh",
     "status": "node src/status.js"
   },
