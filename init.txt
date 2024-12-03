@@ -1,0 +1,6 @@
+docker build -t clientfy-bot .
+docker tag clientfy-bot clientfyregistry.azurecr.io/clientfy-bot:latest
+docker push clientfyregistry.azurecr.io/clientfy-bot:latest
+
+az webapp restart --name clientfy-bot --resource-group clientfy-rg
+az webapp log tail --name clientfy-bot --resource-group clientfy-rg

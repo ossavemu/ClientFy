@@ -1,0 +1,20 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  imageName: 'clientfy-bot'
+  containerRegistry: 'clientfyregistry.azurecr.io'
+
+steps:
+  - task: Docker@2
+    inputs:
+      containerRegistry: '$(containerRegistry)'
+      repository: '$(imageName)'
+      command: 'buildAndPush'
+      Dockerfile: '**/Dockerfile'
+      tags: |
+        $(Build.BuildId)
+        latest
