@@ -34,6 +34,7 @@ fi
 
 # Limpiar instancias antiguas
 echo "Deteniendo instancias antiguas..."
+sudo -u $ACTUAL_USER pm2 stop all || true
 sudo -u $ACTUAL_USER pm2 delete all || true
 
 # Iniciar el servidor de estado usando PM2
